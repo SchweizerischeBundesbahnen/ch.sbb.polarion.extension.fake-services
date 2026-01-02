@@ -8,9 +8,10 @@ Require-Bundle: com.polarion.portal.tomcat,
  com.polarion.platform,
  ch.sbb.polarion.extension.aad-synchronizer;resolution:=optional,
  org.glassfish.jersey,
- com.fasterxml.jackson,
- com.fasterxml.jackson.jaxrs,
- io.swagger,
+ com.fasterxml.jackson.core,
+ com.fasterxml.jackson.databind,
+ com.fasterxml.jackson.annotations,
+ com.fasterxml.jackson.module.jaxb.annotations,
  org.apache.commons.logging,
  slf4j.api
 Import-Package: org.osgi.framework
