@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/compare/v1.1.0...v1.2.0) (2025-12-12)
+
+
+### Features
+
+* OpenText endpoints improvement ([#44](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/44)) ([ae76fea](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/ae76feaf2e6b8863daff8aefd7768bff021c776f)), closes [#43](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/43)
+
 ## [1.1.0](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/compare/v1.0.1...v1.1.0) (2025-12-04)
 
 

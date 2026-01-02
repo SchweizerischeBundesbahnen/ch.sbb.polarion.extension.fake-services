@@ -37,6 +37,7 @@ public class OpenTextApiController {
     private static final String ERROR = "error";
     private static final String MESSAGE = "message";
     private static final String TICKET_ERROR = "Invalid or missing ticket";
+    private static final String COUNT = "count";
 
     /**
      * Map username to password for authentication
@@ -91,7 +92,7 @@ public class OpenTextApiController {
         }
 
         String storedPassword = users.get(username);
-        if (storedPassword == null || !storedPassword.equals(password)) {
+        if (!Objects.equals(storedPassword, password)) {
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity(Map.of(ERROR, "Invalid username or password"))
                     .build();
@@ -247,11 +248,11 @@ public class OpenTextApiController {
         if (destination != null) {
             // New container creation scenario
             String newContainerId = "CONTAINER_" + System.currentTimeMillis();
-            containers.add(new Container(newContainerId, name, nodeId, destination));
+            containers.add(new Container(newContainerId, name, nodeId, destination, ticket));
             return Response.ok(Map.of("objId", newContainerId, "status", "OK")).build();
         } else if (containerId != null) {
             // Check file existence scenario
-            boolean fileExists = uploads.stream().anyMatch(upload -> Objects.equals(upload.fileName(), filename));
+            boolean fileExists = uploads.stream().anyMatch(upload -> Objects.equals(upload.fileName(), filename) && Objects.equals(upload.ticket(), ticket));
             return Response.ok(Map.of("documentexists", fileExists)).build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST)
@@ -353,8 +354,8 @@ public class OpenTextApiController {
                     )
             }
     )
-    public Response getAllUploads() {
-        return Response.ok(uploads).build();
+    public Response getAllUploads(@Parameter(description = "Specific ticket id") @QueryParam("ticket") String ticket) {
+        return Response.ok(ticket == null ? uploads : uploads.stream().filter(upload -> Objects.equals(upload.ticket(), ticket)).toList()).build();
     }
 
     @DELETE
@@ -371,10 +372,18 @@ public class OpenTextApiController {
                     )
             }
     )
-    public Response clearUploads() {
-        int count = uploads.size();
-        uploads.clear();
-        return Response.ok(Map.of(MESSAGE, "Uploads cleared successfully", "count", count)).build();
+    public Response clearUploads(@Parameter(description = "Specific ticket id") @QueryParam("ticket") String ticket) {
+        int count;
+        if (ticket != null) {
+            List<Upload> toRemove = uploads.stream()
+                    .filter(upload -> Objects.equals(upload.ticket(), ticket)).toList();
+            count = toRemove.size();
+            toRemove.forEach(uploads::remove);
+        } else {
+            count = uploads.size();
+            uploads.clear();
+        }
+        return Response.ok(Map.of(MESSAGE, "Uploads cleared successfully", COUNT, count)).build();
     }
 
     @GET
@@ -391,14 +400,14 @@ public class OpenTextApiController {
                     )
             }
     )
-    public Response getAllContainers() {
-        return Response.ok(containers).build();
+    public Response getAllContainers(@Parameter(description = "Specific ticket id") @QueryParam("ticket") String ticket) {
+        return Response.ok(ticket == null ? containers : containers.stream().filter(container -> Objects.equals(container.ticket(), ticket)).toList()).build();
     }
 
     @DELETE
     @Path("/manage/containers")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Clear all containers",
+    @Operation(summary = "Clear containers",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -409,10 +418,64 @@ public class OpenTextApiController {
                     )
             }
     )
-    public Response clearContainers() {
-        int count = containers.size();
-        containers.clear();
-        return Response.ok(Map.of(MESSAGE, "Containers cleared successfully", "count", count)).build();
+    public Response clearContainers(@Parameter(description = "Specific ticket id") @QueryParam("ticket") String ticket) {
+        int count;
+        if (ticket != null) {
+            List<Container> toRemove = containers.stream()
+                    .filter(container -> Objects.equals(container.ticket(), ticket)).toList();
+            count = toRemove.size();
+            toRemove.forEach(containers::remove);
+        } else {
+            count = containers.size();
+            containers.clear();
+        }
+        return Response.ok(Map.of(MESSAGE, "Containers cleared successfully", COUNT, count)).build();
+    }
+
+    @GET
+    @Path("/manage/tickets")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Get all tickets",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successfully retrieved all tickets",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON
+                            )
+                    )
+            }
+    )
+    public Response getAllTickets() {
+        return Response.ok(tickets).build();
+    }
+
+    @DELETE
+    @Path("/manage/tickets")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Clear tickets",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successfully cleared tickets list",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON
+                            )
+                    )
+            }
+    )
+    public Response clearTickets(@Parameter(description = "Specific ticket id") @QueryParam("ticket") String ticket) {
+        int count;
+        if (ticket != null) {
+            List<String> keysToRemove = tickets.entrySet().stream()
+                    .filter(entry -> Objects.equals(entry.getValue(), ticket)).map(Map.Entry::getKey).toList();
+            count = keysToRemove.size();
+            keysToRemove.forEach(tickets::remove);
+        } else {
+            count = tickets.size();
+            tickets.clear();
+        }
+        return Response.ok(Map.of(MESSAGE, "Ticket(s) cleared successfully", COUNT, count)).build();
     }
 
     /**

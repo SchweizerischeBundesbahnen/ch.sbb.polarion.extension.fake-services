@@ -322,6 +322,16 @@
     "/api/opentext/manage/containers": {
       "delete": {
         "operationId": "clearContainers",
+        "parameters": [
+          {
+            "description": "Specific ticket id",
+            "in": "query",
+            "name": "ticket",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
@@ -330,13 +340,23 @@
             "description": "Successfully cleared containers list"
           }
         },
-        "summary": "Clear all containers",
+        "summary": "Clear containers",
         "tags": [
           "Fake OpenText Content Server"
         ]
       },
       "get": {
         "operationId": "getAllContainers",
+        "parameters": [
+          {
+            "description": "Specific ticket id",
+            "in": "query",
+            "name": "ticket",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
@@ -351,9 +371,61 @@
         ]
       }
     },
+    "/api/opentext/manage/tickets": {
+      "delete": {
+        "operationId": "clearTickets",
+        "parameters": [
+          {
+            "description": "Specific ticket id",
+            "in": "query",
+            "name": "ticket",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {}
+            },
+            "description": "Successfully cleared tickets list"
+          }
+        },
+        "summary": "Clear tickets",
+        "tags": [
+          "Fake OpenText Content Server"
+        ]
+      },
+      "get": {
+        "operationId": "getAllTickets",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {}
+            },
+            "description": "Successfully retrieved all tickets"
+          }
+        },
+        "summary": "Get all tickets",
+        "tags": [
+          "Fake OpenText Content Server"
+        ]
+      }
+    },
     "/api/opentext/manage/uploads": {
       "delete": {
         "operationId": "clearUploads",
+        "parameters": [
+          {
+            "description": "Specific ticket id",
+            "in": "query",
+            "name": "ticket",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
@@ -369,6 +441,16 @@
       },
       "get": {
         "operationId": "getAllUploads",
+        "parameters": [
+          {
+            "description": "Specific ticket id",
+            "in": "query",
+            "name": "ticket",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
