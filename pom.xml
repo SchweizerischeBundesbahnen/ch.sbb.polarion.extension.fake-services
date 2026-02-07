@@ -49,7 +49,7 @@
 
         <web.app.name>${maven-jar-plugin.Extension-Context}</web.app.name>
 
-        <aad-synchronizer.version>4.0.0</aad-synchronizer.version>
+        <aad-synchronizer.version>5.0.0</aad-synchronizer.version>
         <org.osgi.framework.version>1.10.0</org.osgi.framework.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
     </properties>
