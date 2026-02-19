@@ -1,17 +1,2 @@
-Support-Email: polarion-opensource@sbb.ch
 Bundle-Name: Fake Services
 Bundle-Activator: ch.sbb.polarion.extension.fake_services.FakeServicesBundleActivator
-Bundle-ActivationPolicy: lazy
-Require-Bundle: com.polarion.portal.tomcat,
- com.polarion.alm.ui,
- com.polarion.alm.projects,
- com.polarion.platform,
- ch.sbb.polarion.extension.aad-synchronizer;resolution:=optional,
- org.glassfish.jersey,
- com.fasterxml.jackson.core,
- com.fasterxml.jackson.databind,
- com.fasterxml.jackson.annotations,
- com.fasterxml.jackson.module.jaxb.annotations,
- org.apache.commons.logging,
- slf4j.api
-Import-Package: org.osgi.framework
