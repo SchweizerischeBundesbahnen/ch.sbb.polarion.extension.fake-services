@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.0.2](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/compare/v2.0.1...v2.0.2) (2026-06-09)
+
+
+### Bug Fixes
+
+* **deps:** update aad-synchronizer.version to v5.3.1 ([#60](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/60)) ([bb1954c](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/bb1954c7935f3a6dab691bac4bff541fd7972735))
+* **deps:** update dependency ch.sbb.polarion.extensions:ch.sbb.polarion.extension.aad-synchronizer to v5 ([#51](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/51)) ([c80aeab](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/c80aeaba39a4dc40fd8503985a7768ffad531a3b))
+* **deps:** update dependency ch.sbb.polarion.extensions:ch.sbb.polarion.extension.aad-synchronizer to v5.0.1 ([3b67a65](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/3b67a65b7416f2104e96c23d9c0399cacf192c68))
+* **deps:** update dependency ch.sbb.polarion.extensions:ch.sbb.polarion.extension.aad-synchronizer to v5.1.0 ([b3db7be](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/b3db7be0e6a193eec41a92aa9272f7da3d66b015))
+* **deps:** update dependency ch.sbb.polarion.extensions:ch.sbb.polarion.extension.aad-synchronizer to v5.2.0 ([4bc829c](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/4bc829ce19712653c2d7a0e4a02f0343e02c121f))
+* **deps:** update dependency ch.sbb.polarion.extensions:ch.sbb.polarion.extension.aad-synchronizer to v5.3.0 ([319677f](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/319677ff5751d05016835c9377c3be552c96e6f2))
+* **deps:** update dependency ch.sbb.polarion.extensions:ch.sbb.polarion.extension.generic to v14.1.1 ([95d0d78](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/95d0d784647a608db1bdc6435580105a84a90049))
+* **deps:** update dependency ch.sbb.polarion.extensions:ch.sbb.polarion.extension.generic to v14.1.2 ([09e6402](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/09e6402ddb362cc90d86efa359790e6f788289c5))
+* **deps:** update dependency ch.sbb.polarion.extensions:ch.sbb.polarion.extension.generic to v14.1.4 ([5abaf9c](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/5abaf9c0cba34ad0f9fe034fa70df7d16cbc281b))
+* **deps:** update dependency ch.sbb.polarion.extensions:ch.sbb.polarion.extension.generic to v14.1.5 ([4a78414](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/4a7841437e1846a96088e0c81fa0831aa82bb61e))
+* **deps:** update dependency ch.sbb.polarion.extensions:ch.sbb.polarion.extension.generic to v14.1.6 ([4b2d22e](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/4b2d22e456fe24883e645bf3211ca355b04610ef))
+
 ## [2.0.1](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/compare/v2.0.0...v2.0.1) (2026-02-19)
 
 
