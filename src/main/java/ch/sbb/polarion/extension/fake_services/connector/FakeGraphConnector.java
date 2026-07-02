@@ -6,8 +6,8 @@ import ch.sbb.polarion.extension.aad.synchronizer.model.Member;
 import ch.sbb.polarion.extension.aad.synchronizer.model.OrganizationData;
 
 import java.security.SecureRandom;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -72,7 +72,7 @@ public class FakeGraphConnector implements IGraphConnector {
 
     @Override
     public OrganizationData getOrganizationData() {
-        return new OrganizationData(new Date());
+        return new OrganizationData(Instant.now());
     }
 
 }
