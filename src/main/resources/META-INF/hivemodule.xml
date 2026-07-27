@@ -8,7 +8,7 @@
                   parentNodeName="Fake Services"
                   parentNodeIconUrl="/polarion/fake-services-admin/ui/images/menu/30x30/_parent.svg"
                   iconUrl="/polarion/fake-services-admin/ui/images/menu/16x16/about.svg"
-                  pageUrl="/polarion/fake-services-admin/pages/about.jsp"
+                  pageUrl="/polarion/fake-services-app/ui/app/index.html?feature=about&amp;embedded=true&amp;scope=$scope$"
                   projectScope="false"
                   projectGroupScope="false"
                   repositoryScope="true"/>
