@@ -15,4 +15,11 @@
                 contextRoot="webapp/fake-services-admin">
         </webapp>
     </extension>
+    <extension
+            point="com.polarion.portal.tomcat.webapps">
+        <webapp
+                name="polarion/fake-services-app"
+                contextRoot="webapp/fake-services-app">
+        </webapp>
+    </extension>
 </plugin>
