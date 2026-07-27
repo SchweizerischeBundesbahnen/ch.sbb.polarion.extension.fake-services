@@ -5,7 +5,7 @@ import ch.sbb.polarion.extension.generic.GenericUiServlet;
 import java.io.Serial;
 
 /**
- * Serves the React single-page app from the third webapp context ({@code fake-services-app}). The
+ * Serves the React single-page app from its own webapp context ({@code fake-services-app}). The
  * admin extenders in hivemodule.xml open it as
  * {@code /polarion/fake-services-app/ui/app/index.html?feature=<id>}; everything else about the
  * request handling comes from the generic servlet.
