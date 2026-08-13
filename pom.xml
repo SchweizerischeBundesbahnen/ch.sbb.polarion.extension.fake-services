@@ -61,6 +61,10 @@
         <org.osgi.framework.version>1.10.0</org.osgi.framework.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
 
+        <!-- A broken README.md -> about.html conversion fails the build instead of shipping an
+             empty About page. markdown2html renders locally since 1.7.x - no GitHub API, no token -
+             so the same setting is right in CI, in a deploy job and on a developer machine. -->
+        <markdown2html-maven-plugin.failOnError>true</markdown2html-maven-plugin.failOnError>
     </properties>
 
     <dependencies>
@@ -145,7 +149,6 @@
                 <artifactId>swagger-maven-plugin-jakarta</artifactId>
                 <configuration>
                     <outputFormat>JSON</outputFormat>
-                    <sortOutput>true</sortOutput>
                     <resourcePackages>
                         <package>ch.sbb.polarion.extension.generic.rest.controller.info</package>
                         <package>ch.sbb.polarion.extension.generic.rest.model</package>
