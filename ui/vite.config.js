@@ -17,13 +17,6 @@ export default defineConfig(({ command, mode }) => {
       resolve,
       server: {
         proxy: {
-          // Generic UI toolkit (SearchableDropdown JS + its CSS) served by GenericUiServlet. Served
-          // unauthenticated in Polarion (see the fake-services-app web.xml), so the dev proxy can fetch
-          // it without a session.
-          '/polarion/fake-services-app/ui/generic': {
-            target: polarionUrl,
-            changeOrigin: true,
-          },
           // The extension's own webapp context: its REST API, which the About page reads.
           '/polarion/fake-services/rest': {
             target: polarionUrl,
