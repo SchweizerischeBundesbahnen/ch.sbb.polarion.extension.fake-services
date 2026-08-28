@@ -163,34 +163,11 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "properties": {
-                  "file": {
-                    "description": "File to upload",
-                    "type": "object"
-                  },
-                  "name": {
-                    "description": "Document name",
-                    "type": "string"
-                  },
-                  "parent_id": {
-                    "description": "Parent ID",
-                    "type": "string"
-                  },
-                  "type": {
-                    "description": "Type",
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "file",
-                  "name",
-                  "parent_id",
-                  "type"
-                ],
                 "type": "object"
               }
             }
-          }
+          },
+          "description": "Multipart form holding the file and its attributes. Every field is recorded as received, the fake imposes no set of field names."
         },
         "responses": {
           "200": {
@@ -310,24 +287,11 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "properties": {
-                  "add_major_version": {
-                    "description": "Add major version",
-                    "type": "string"
-                  },
-                  "file": {
-                    "description": "File to upload",
-                    "type": "object"
-                  }
-                },
-                "required": [
-                  "add_major_version",
-                  "file"
-                ],
                 "type": "object"
               }
             }
-          }
+          },
+          "description": "Multipart form holding the file and its attributes. Every field is recorded as received, the fake imposes no set of field names."
         },
         "responses": {
           "200": {
