@@ -5,10 +5,14 @@ import ch.sbb.polarion.extension.fake_services.rest.model.opentext.Upload;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.SneakyThrows;
-import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.glassfish.jersey.media.multipart.BodyPartEntity;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 
 import jakarta.inject.Singleton;
 import jakarta.ws.rs.Consumes;
@@ -21,14 +25,18 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Singleton
 @Tag(name = "Fake OpenText Content Server")
@@ -40,6 +48,10 @@ public class OpenTextApiController {
     private static final String MESSAGE = "message";
     private static final String TICKET_ERROR = "Invalid or missing ticket";
     private static final String COUNT = "count";
+    private static final String MULTIPART_BODY_DESCRIPTION = "Multipart form holding the file and its attributes. Every field is recorded as received, the fake imposes no set of field names.";
+    private static final String FIELD_FILE = "file";
+    private static final String FIELD_NAME = "name";
+    private static final String FIELD_PARENT_ID = "parent_id";
 
     /**
      * Map username to password for authentication
@@ -125,13 +137,11 @@ public class OpenTextApiController {
                     )
             }
     )
+    @RequestBody(description = MULTIPART_BODY_DESCRIPTION, content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA, schema = @Schema(type = "object")))
     @SneakyThrows
     public Response writeFileToContainer(
             @Parameter(description = "Authentication ticket", required = true) @HeaderParam(HEADER_TICKET_PARAM) String ticket,
-            @Parameter(description = "Type", required = true) @FormDataParam("type") String type,
-            @Parameter(description = "Parent ID", required = true) @FormDataParam("parent_id") String parentId,
-            @Parameter(description = "Document name", required = true) @FormDataParam("name") String name,
-            @Parameter(description = "File to upload", required = true) @FormDataParam("file") InputStream inputStream) {
+            @Parameter(hidden = true) FormDataMultiPart multiPart) {
 
         if (isInvalidTicket(ticket)) {
             return Response.status(Response.Status.UNAUTHORIZED)
@@ -139,8 +149,9 @@ public class OpenTextApiController {
                     .build();
         }
 
+        Map<String, String> params = collectFormParams(multiPart);
         String nodeId = "NODE_" + System.currentTimeMillis();
-        uploads.add(Upload.fromValues(name, nodeId, parentId, inputStream, ticket, false));
+        uploads.add(Upload.fromValues(params.get(FIELD_NAME), nodeId, params.get(FIELD_PARENT_ID), getFileStream(multiPart), ticket, false, params));
 
         return Response.ok(Map.of("id", nodeId)).build();
     }
@@ -197,12 +208,12 @@ public class OpenTextApiController {
                     )
             }
     )
+    @RequestBody(description = MULTIPART_BODY_DESCRIPTION, content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA, schema = @Schema(type = "object")))
     @SneakyThrows
     public Response writeNewFileVersion(
             @Parameter(description = "Node ID", required = true) @PathParam("nodeId") String nodeId,
             @Parameter(description = "Authentication ticket", required = true) @HeaderParam(HEADER_TICKET_PARAM) String ticket,
-            @Parameter(description = "Add major version", required = true) @FormDataParam("add_major_version") String addMajorVersion,
-            @Parameter(description = "File to upload", required = true) @FormDataParam("file") InputStream inputStream) {
+            @Parameter(hidden = true) FormDataMultiPart multiPart) {
 
         if (isInvalidTicket(ticket)) {
             return Response.status(Response.Status.UNAUTHORIZED)
@@ -210,7 +221,8 @@ public class OpenTextApiController {
                     .build();
         }
 
-        uploads.add(Upload.fromValues(null, nodeId, null, inputStream, ticket, true));
+        Map<String, String> params = collectFormParams(multiPart);
+        uploads.add(Upload.fromValues(null, nodeId, null, getFileStream(multiPart), ticket, true, params));
 
         return Response.ok(Map.of("id", nodeId, "version_number", "2.0")).build();
     }
@@ -239,7 +251,8 @@ public class OpenTextApiController {
             @Parameter(description = "Name", required = true) @QueryParam("name") String name,
             @Parameter(description = "Container ID") @QueryParam("containerid") String containerId,
             @Parameter(description = "File Name", required = true) @QueryParam("filename") String filename,
-            @PathParam("nodeId") @Parameter(description = "Node ID", required = true) String nodeId) {
+            @PathParam("nodeId") @Parameter(description = "Node ID", required = true) String nodeId,
+            @Context UriInfo uriInfo) {
 
         if (isInvalidTicket(ticket)) {
             return Response.status(Response.Status.UNAUTHORIZED)
@@ -250,7 +263,7 @@ public class OpenTextApiController {
         if (destination != null) {
             // New container creation scenario
             String newContainerId = "CONTAINER_" + System.currentTimeMillis();
-            containers.add(new Container(newContainerId, name, nodeId, destination, ticket));
+            containers.add(new Container(newContainerId, name, nodeId, destination, ticket, collectQueryParams(uriInfo)));
             return Response.ok(Map.of("objId", newContainerId, "status", "OK")).build();
         } else if (containerId != null) {
             // Check file existence scenario
@@ -478,6 +491,42 @@ public class OpenTextApiController {
             tickets.clear();
         }
         return Response.ok(Map.of(MESSAGE, "Ticket(s) cleared successfully", COUNT, count)).build();
+    }
+
+    /**
+     * Records every query parameter of the request as received. Nothing is filtered by name, so a caller can assert
+     * on parameters this fake knows nothing about. Repeated parameters are joined with a comma.
+     */
+    private Map<String, String> collectQueryParams(UriInfo uriInfo) {
+        Map<String, String> params = new LinkedHashMap<>();
+        if (uriInfo != null) {
+            uriInfo.getQueryParameters().forEach((key, values) -> params.put(key, String.join(",", values)));
+        }
+        return params;
+    }
+
+    /**
+     * Records every form field of the request as received. Nothing is filtered by name, so a caller can assert on
+     * fields this fake knows nothing about. The file field is left out, its size is stored on the upload instead.
+     */
+    private Map<String, String> collectFormParams(FormDataMultiPart multiPart) {
+        Map<String, String> params = new LinkedHashMap<>();
+        if (multiPart != null) {
+            multiPart.getFields().forEach((key, parts) -> {
+                if (!FIELD_FILE.equals(key)) {
+                    params.put(key, parts.stream().map(FormDataBodyPart::getValue).collect(Collectors.joining(",")));
+                }
+            });
+        }
+        return params;
+    }
+
+    /**
+     * Returns the content of the file field, or null if the request carries no file.
+     */
+    private InputStream getFileStream(FormDataMultiPart multiPart) {
+        FormDataBodyPart filePart = multiPart == null ? null : multiPart.getField(FIELD_FILE);
+        return filePart != null && filePart.getEntity() instanceof BodyPartEntity entity ? entity.getInputStream() : null;
     }
 
     /**
