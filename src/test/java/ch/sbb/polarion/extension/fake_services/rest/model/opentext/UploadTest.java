@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,8 +18,10 @@ class UploadTest {
     void testUploadWithNonEmptyStream() {
         String content = "Hello World!"; // 12 bytes
         ByteArrayInputStream in = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
-        Upload upload = Upload.fromValues("file.txt", "123", "456", in, "ticket-1", false);
+        Map<String, String> params = Map.of("type", "144", "parent_id", "456", "name", "file.txt");
+        Upload upload = Upload.fromValues("file.txt", "123", "456", in, "ticket-1", false, params);
 
+        assertEquals(params, upload.params());
         assertEquals("file.txt", upload.fileName());
         assertEquals("123", upload.nodeId());
         assertEquals("456", upload.parentId());
@@ -31,7 +34,7 @@ class UploadTest {
     @SneakyThrows
     void testUploadWithEmptyStream() {
         ByteArrayInputStream in = new ByteArrayInputStream(new byte[0]);
-        Upload upload = Upload.fromValues("empty.txt", "n1", "p1", in, "t-2", false);
+        Upload upload = Upload.fromValues("empty.txt", "n1", "p1", in, "t-2", false, Map.of());
 
         assertEquals(0, upload.size());
         assertEquals("empty.txt", upload.fileName());
@@ -44,7 +47,7 @@ class UploadTest {
     @Test
     @SneakyThrows
     void testUploadWithNullStream() {
-        Upload upload = Upload.fromValues("null.bin", "n2", "p2", null, "t-3", false);
+        Upload upload = Upload.fromValues("null.bin", "n2", "p2", null, "t-3", false, Map.of());
         assertEquals(0, upload.size());
         assertEquals("null.bin", upload.fileName());
         assertEquals("n2", upload.nodeId());
@@ -58,7 +61,7 @@ class UploadTest {
     void testVersionUpdateUpload() {
         String content = "New Version"; // 11 bytes
         ByteArrayInputStream in = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
-        Upload upload = Upload.fromValues(null, "node-xyz", null, in, "ticket-4", true);
+        Upload upload = Upload.fromValues(null, "node-xyz", null, in, "ticket-4", true, Map.of("add_major_version", "true"));
 
         assertNull(upload.fileName());
         assertEquals("node-xyz", upload.nodeId());
@@ -83,7 +86,7 @@ class UploadTest {
         // without being declared or caught. It "sneakily" throws the IOException
         // as if it were an unchecked exception at the bytecode level.
         IOException exception = assertThrows(IOException.class, () ->
-                Upload.fromValues("failing.txt", "n3", "p3", failingStream, "t-5", false)
+                Upload.fromValues("failing.txt", "n3", "p3", failingStream, "t-5", false, Map.of())
         );
 
         // Verify it's the expected IOException
