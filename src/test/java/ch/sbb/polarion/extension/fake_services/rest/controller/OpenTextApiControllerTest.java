@@ -158,8 +158,10 @@ class OpenTextApiControllerTest {
 
         assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), upload.getStatus());
         assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), container.getStatus());
-        assertTrue(uploads().isEmpty());
-        assertTrue(containers().isEmpty());
+        // Unfiltered on purpose: the ticket-filtered view would hide a record stored under the rejected ticket, so
+        // this would still pass if the recording ever moved above the ticket check
+        assertTrue(((List<?>) controller.getAllUploads(null).getEntity()).isEmpty());
+        assertTrue(((List<?>) controller.getAllContainers(null).getEntity()).isEmpty());
     }
 
     /**
