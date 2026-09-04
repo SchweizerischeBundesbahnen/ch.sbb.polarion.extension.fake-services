@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.2.0](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/compare/v3.1.0...v3.2.0) (2026-09-04)
+
+
+### Features
+
+* record every parameter the fake OpenText API receives ([#153](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/153)) ([921879f](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/921879f41bf8ea0415b4be9b0c4995ac57ac751b)), closes [#152](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/152)
+
+
+### Bug Fixes
+
+* **deps:** update dependency ch.sbb.polarion.extensions:ch.sbb.polarion.extension.aad-synchronizer to v6.1.0 ([#139](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/139)) ([10028d2](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/10028d23d790da44253872d37b62351fdfbf2f59))
+* **deps:** update dependency globals to v17.12.0 ([#164](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/164)) ([cc1ec02](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/cc1ec028d994fc856be5213090dd34c034e76bde))
+* **deps:** update dependency typescript-eslint to v8.69.0 ([#161](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/161)) ([57e539b](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/57e539b5f41ab64b7ac856e7473505d70a27ffdc))
+
 ## [3.1.0](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/compare/v3.0.2...v3.1.0) (2026-08-21)
 
 
