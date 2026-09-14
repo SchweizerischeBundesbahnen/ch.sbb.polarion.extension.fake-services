@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.2.0](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/compare/v3.1.0...v3.2.0) (2026-09-14)
+
+
+### Features
+
+* record every parameter the fake OpenText API receives ([#153](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/153)) ([921879f](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/921879f41bf8ea0415b4be9b0c4995ac57ac751b)), closes [#152](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/152)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @types/node to v24.13.4 ([#174](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/174)) ([df4f518](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/df4f51899b7c890686724926b01216feaaf43940))
+* **deps:** update dependency @types/react-dom to v19.2.7 ([#166](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/166)) ([61c5594](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/61c55947f00064700b1a681e210dae29b900056b))
+* **deps:** update dependency ch.sbb.polarion.extensions:ch.sbb.polarion.extension.aad-synchronizer to v6.1.0 ([#139](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/139)) ([10028d2](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/10028d23d790da44253872d37b62351fdfbf2f59))
+* **deps:** update dependency eslint to v10.10.0 ([#169](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/169)) ([aac78d4](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/aac78d45a8c11889e55a71463e41ad9560fe6a90))
+* **deps:** update dependency globals to v17.12.0 ([#164](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/164)) ([cc1ec02](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/cc1ec028d994fc856be5213090dd34c034e76bde))
+* **deps:** update dependency playwright to v1.63.0 ([#170](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/170)) ([9063993](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/9063993234699c39b934bdcf3d6f25d4b233082e))
+* **deps:** update dependency typescript-eslint to v8.69.0 ([#161](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/161)) ([57e539b](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/57e539b5f41ab64b7ac856e7473505d70a27ffdc))
+* **deps:** update dependency typescript-eslint to v8.70.0 ([#171](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/171)) ([1e073e6](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/1e073e680995f8a621aa18afd786c18cc1bfb69e))
+* **deps:** update dependency vite to v8.3.0 ([#176](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/176)) ([7197202](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/719720225e2f12014873611f6be199313fa63aff))
+* **deps:** update react monorepo to v19.3.0 ([#175](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/issues/175)) ([11606d5](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/commit/11606d5ff1cccc52abb854e766f89ee7a732cb41))
+
 ## [3.1.0](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.fake-services/compare/v3.0.2...v3.1.0) (2026-08-21)
 
 
