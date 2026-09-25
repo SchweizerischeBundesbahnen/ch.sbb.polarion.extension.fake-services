@@ -1,8 +1,10 @@
+import { pageViolations } from '@sbb-polarion/react-sbb-polarion/testing';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render } from 'vitest-browser-react';
+import { page } from 'vitest/browser';
 import App from '../src/App';
 import { findFeature } from '../src/features';
-import { installFetchMock, jsonResponse } from './mockFetch';
+import { type Route, installFetchMock, jsonResponse } from './mockFetch';
 
 // The top-level feature router: `?feature=<id>` selects a page, anything unmatched (incl. bare `/`)
 // renders the dev Landing stub. Also covers the About wrapper (feeds the shared RSP About component
@@ -80,5 +82,46 @@ describe('App router', () => {
     await vi.waitFor(() => expect(document.querySelector('.about-table')).not.toBeNull());
     expect(document.body.textContent).toContain('Fake Services');
     expect(document.querySelector('.about-page .app-icon')).not.toBeNull();
+  });
+});
+
+describe('accessibility', () => {
+  async function renderLanding(projectsRoute: Route) {
+    installFetchMock([projectsRoute]);
+    window.history.replaceState({}, '', '?');
+    render(<App />);
+    await vi.waitFor(() => expect(document.querySelector('.landing-scope .sd-trigger')).not.toBeNull());
+  }
+
+  const projectsOk: Route = { method: 'GET', match: /\/polarion\/rest\/v1\/projects/, json: PROJECTS };
+
+  it('names the Landing scope control after its label', async () => {
+    await renderLanding(projectsOk);
+    expect(page.getByRole('combobox', { name: 'Project scope:' }).element()).toBeVisible();
+  });
+
+  it('has no WCAG A/AA violations on the Landing page', async () => {
+    await renderLanding(projectsOk);
+    await vi.waitFor(() => expect(document.querySelector('.feature-list')).not.toBeNull());
+    expect(await pageViolations()).toEqual([]);
+  });
+
+  it('has no WCAG A/AA violations on the Landing page with a load error', async () => {
+    await renderLanding({
+      method: 'GET',
+      match: /\/polarion\/rest\/v1\/projects/,
+      respond: () => jsonResponse({}, 401),
+    });
+    await vi.waitFor(() => expect(document.querySelector('.landing .alert-error')).not.toBeNull());
+    expect(await pageViolations()).toEqual([]);
+  });
+
+  it('has no WCAG A/AA violations on the About page', async () => {
+    installFetchMock(aboutRoutes());
+    window.history.replaceState({}, '', '?feature=about&embedded=true');
+    render(<App />);
+    await vi.waitFor(() => expect(document.querySelector('.about-page .app-icon')).not.toBeNull());
+    await vi.waitFor(() => expect(document.body.textContent).toContain('Readme'));
+    expect(await pageViolations()).toEqual([]);
   });
 });
