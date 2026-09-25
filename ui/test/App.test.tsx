@@ -97,12 +97,18 @@ describe('accessibility', () => {
 
   it('names the Landing scope control after its label', async () => {
     await renderLanding(projectsOk);
+    await vi.waitFor(() =>
+      expect(document.querySelector('.landing-scope option[value="project/elibrary/"]')).not.toBeNull(),
+    );
     expect(page.getByRole('combobox', { name: 'Project scope:' }).element()).toBeVisible();
   });
 
   it('has no WCAG A/AA violations on the Landing page', async () => {
     await renderLanding(projectsOk);
     await vi.waitFor(() => expect(document.querySelector('.feature-list')).not.toBeNull());
+    await vi.waitFor(() =>
+      expect(document.querySelector('.landing-scope option[value="project/elibrary/"]')).not.toBeNull(),
+    );
     expect(await pageViolations()).toEqual([]);
   });
 
