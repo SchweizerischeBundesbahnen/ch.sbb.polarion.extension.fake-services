@@ -653,6 +653,149 @@
           "Extension Information"
         ]
       }
+    },
+    "/api/webhook/manage/calls": {
+      "delete": {
+        "operationId": "clearCalls",
+        "parameters": [
+          {
+            "description": "Specific bucket",
+            "in": "query",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {}
+            },
+            "description": "Successfully cleared the recorded calls"
+          }
+        },
+        "summary": "Clear the recorded calls",
+        "tags": [
+          "Fake Webhook"
+        ]
+      },
+      "get": {
+        "operationId": "getCalls",
+        "parameters": [
+          {
+            "description": "Specific bucket",
+            "in": "query",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {}
+            },
+            "description": "Successfully retrieved the recorded calls"
+          }
+        },
+        "summary": "Get the recorded calls",
+        "tags": [
+          "Fake Webhook"
+        ]
+      }
+    },
+    "/api/webhook/respond": {
+      "post": {
+        "description": "With no parameters the call is answered with the HTML it carried, which is what an export that passes through a webhook unchanged looks like. The parameters make the webhook refuse, stall or change the HTML instead.",
+        "operationId": "respond",
+        "parameters": [
+          {
+            "description": "Bucket the call is recorded in",
+            "in": "query",
+            "name": "key",
+            "schema": {
+              "default": "default",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Status to answer with",
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "default": 200,
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Body to answer with where the status is not 200",
+            "in": "query",
+            "name": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Length of a generated body, used where no body is given",
+            "in": "query",
+            "name": "bodySize",
+            "schema": {
+              "default": 0,
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Milliseconds to wait before answering",
+            "in": "query",
+            "name": "delayMillis",
+            "schema": {
+              "default": 0,
+              "format": "int64",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Markup inserted before </body> of the HTML the webhook answers with",
+            "in": "query",
+            "name": "append",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "description": "The multipart form an exporter sends: exportParams and html. Every field is recorded as received, the fake imposes no set of field names."
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "text/plain": {}
+            },
+            "description": "The HTML the export carries on with"
+          },
+          "default": {
+            "content": {
+              "text/plain": {}
+            },
+            "description": "The status the query asked for, with the body it asked for"
+          }
+        },
+        "summary": "Answer an export webhook call the way the query asks",
+        "tags": [
+          "Fake Webhook"
+        ]
+      }
     }
   },
   "components": {
