@@ -36,6 +36,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -150,7 +151,7 @@ public class OpenTextApiController {
         }
 
         Map<String, String> params = collectFormParams(multiPart);
-        String nodeId = "NODE_" + System.currentTimeMillis();
+        String nodeId = "NODE_" + UUID.randomUUID();
         uploads.add(Upload.fromValues(params.get(FIELD_NAME), nodeId, params.get(FIELD_PARENT_ID), getFileStream(multiPart), ticket, false, params));
 
         return Response.ok(Map.of("id", nodeId)).build();
@@ -248,9 +249,9 @@ public class OpenTextApiController {
     public Response createContainer(
             @Parameter(description = "Authentication ticket", required = true) @HeaderParam(HEADER_TICKET_PARAM) String ticket,
             @Parameter(description = "Destination (folder)") @QueryParam("destination") String destination,
-            @Parameter(description = "Name", required = true) @QueryParam("name") String name,
+            @Parameter(description = "Name") @QueryParam("name") String name,
             @Parameter(description = "Container ID") @QueryParam("containerid") String containerId,
-            @Parameter(description = "File Name", required = true) @QueryParam("filename") String filename,
+            @Parameter(description = "File Name") @QueryParam("filename") String filename,
             @PathParam("nodeId") @Parameter(description = "Node ID", required = true) String nodeId,
             @Context UriInfo uriInfo) {
 
