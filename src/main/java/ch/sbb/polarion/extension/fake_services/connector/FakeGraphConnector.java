@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class FakeGraphConnector implements IGraphConnector {
 
-    public static final SecureRandom RANDOM = new SecureRandom();
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     private static final String[] NAMES = {
             "Alice", "Bob", "Carol", "David", "Emma", "Eva", "Frank", "Grace", "Henry", "Isabella", "Jack",

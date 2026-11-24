@@ -65,7 +65,7 @@ describe('fetchProjects', () => {
 
   it('throws on a non-OK response', async () => {
     installFetchMock([{ method: 'GET', match: /\/projects/, respond: () => jsonResponse({}, 401) }]);
-    await expect(fetchProjects()).rejects.toThrow();
+    await expect(fetchProjects()).rejects.toThrow(/401|Unauthorized/i);
   });
 
   it('sends the bearer token when configured', async () => {
@@ -92,6 +92,28 @@ describe('fetchProjects', () => {
     expect(await fetchProjects()).toEqual([
       { id: 'beta', name: 'Beta' },
       { id: 'gamma', name: 'gamma' },
+    ]);
+  });
+
+  it('sorts fallback and top-level id rows together by name', async () => {
+    installFetchMock([
+      {
+        method: 'GET',
+        match: /\/projects/,
+        json: {
+          // Input order, id order and name order all differ.
+          data: [
+            { id: 'gamma' }, // sorted by its fallback name
+            { attributes: { id: 'alpha', name: 'Zeta' } },
+            { attributes: { id: 'omega', name: 'Beta' } },
+          ],
+        },
+      },
+    ]);
+    expect(await fetchProjects()).toEqual([
+      { id: 'omega', name: 'Beta' },
+      { id: 'gamma', name: 'gamma' },
+      { id: 'alpha', name: 'Zeta' },
     ]);
   });
 
